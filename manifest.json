@@ -1,6 +1,6 @@
 {
-  "name": "Super User",
-  "description": "Super User Search",
+  "name": "OneSignal SuperUser Quick Link",
+  "description": "Quickly link to onesignal superuser pages for a given UUID or email",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
