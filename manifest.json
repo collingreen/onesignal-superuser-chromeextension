@@ -4,8 +4,8 @@
   "version": "1.0",
   "manifest_version": 3,
   "action": {
-    "default_popup": "hello.html",
-    "default_icon": "hello_extensions.png"
+    "default_popup": "onesignalsuperuser.html",
+    "default_icon": "onesignalsuperuser.png"
   },
   "background": {
     "service_worker": "background.js"
@@ -14,6 +14,6 @@
     "contextMenus"
   ],
   "icons": {
-    "16": "hello_extensions.png"
+    "16": "onesignalsuperuser.png"
   }
 }
