@@ -4,16 +4,16 @@
   "version": "1.0",
   "manifest_version": 3,
   "action": {
-    "default_popup": "onesignalsuperuser.html",
-    "default_icon": "onesignalsuperuser.png"
+    "default_popup": "src/onesignalsuperuser.html",
+    "default_icon": "src/assets/onesignalsuperuser.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "permissions": [
     "contextMenus"
   ],
   "icons": {
-    "16": "onesignalsuperuser.png"
+    "16": "src/assets/onesignalsuperuser.png"
   }
 }
