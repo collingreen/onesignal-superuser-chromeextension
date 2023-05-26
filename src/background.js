@@ -1,12 +1,17 @@
+const MENU = {
+  APP_AND_EMAIL: 'app-email-search',
+  ORG: 'org'
+}
+
 chrome.runtime.onInstalled.addListener(() => {
   console.log("Extension Installed");
   chrome.contextMenus.create({
-    id: "1",
+    id: MENU.APP_AND_EMAIL,
     title: 'Search by App/Email "%s"',
     contexts: ["selection"],
   });
   chrome.contextMenus.create({
-    id: "2",
+    id: MENU.ORG,
     title: 'Search by Org "%s"',
     contexts: ["selection"],
   });
@@ -28,7 +33,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   const email_ok = email_re.exec(info.selectionText);
 
   console.log("starting conditionals");
-  if (info.menuItemId === "1") {
+  if (info.menuItemId === MENU.APP_AND_EMAIL) {
     console.log("start if");
     if (uuid_ok) {
       console.log("Searching for app id on submit");
@@ -44,7 +49,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
   }
 
-  if (info.menuItemId === "2") {
+  if (info.menuItemId === MENU.ORG) {
     if (uuid_ok) {
       console.log("Searching for org id on submit");
       const newUrl = `${orgURL + info.selectionText}`;
