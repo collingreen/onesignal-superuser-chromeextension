@@ -7,12 +7,12 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log("Extension Installed");
   chrome.contextMenus.create({
     id: MENU.APP_AND_EMAIL,
-    title: 'Search by App/Email "%s"',
+    title: 'OS App/Email "%s"',
     contexts: ["selection"],
   });
   chrome.contextMenus.create({
     id: MENU.ORG,
-    title: 'Search by Org "%s"',
+    title: 'OS Org "%s"',
     contexts: ["selection"],
   });
 });
