@@ -1,13 +1,44 @@
 const MENU = {
-  APP_AND_EMAIL: 'app-email-search',
-  ORG: 'org'
-}
+  EMAIL_SEARCH: 'onesignalquicklink-email-search',
+  APP: 'onesignalquicklink-app',
+  ORG: 'onesignalquicklink-org'
+};
+
+const ONESIGNAL_URL = 'https://dashboard.onesignal.com';
+const SUPERUSER_BASE_URL = `${ONESIGNAL_URL}/super-user`;
+const APP_BASE_URL = `${ONESIGNAL_URL}/apps`;
+const ORG_BASE_URL = `${ONESIGNAL_URL}/organizations`;
+
+const urlCreator = {
+  userSearch: (email) => `${SUPERUSER_BASE_URL}?email=${email}`,
+  appPage: (appId) => `${APP_BASE_URL}/${appId}`,
+  orgPage: (orgId) => `${ORG_BASE_URL}/${orgId}`,
+};
+
+const searchSuperuserByEmail = (email) => {
+  // TODO: optionally validate email looks like an email -- do what if not?
+  chrome.tabs.create({ url: urlCreator.userSearch(email) });
+};
+
+const openAppPage = (appId) => {
+  // TODO: optionally validate this is a uuid -- do what if not?
+  chrome.tabs.create({ url: urlCreator.appPage(appId) });
+};
+
+const openOrgPage = (orgId) => {
+  // TODO: optionally validate this is a uuid -- do what if not?
+  chrome.tabs.create({ url: urlCreator.orgPage(orgId) });
+};
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("Extension Installed");
   chrome.contextMenus.create({
-    id: MENU.APP_AND_EMAIL,
-    title: 'OS App/Email "%s"',
+    id: MENU.EMAIL_SEARCH,
+    title: 'Search Email: "%s"',
+    contexts: ["selection"],
+  });
+  chrome.contextMenus.create({
+    id: MENU.APP,
+    title: 'OS App "%s"',
     contexts: ["selection"],
   });
   chrome.contextMenus.create({
@@ -18,47 +49,15 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  // console.log(typeof(info.menuItemId)) Comparisons should be made with strings
-
-  //REGEX FOR VALIDATION
-  const uuid_re =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i; //Accepts UUID format {8}{4}{3}{3}{12}
-  const email_re = /@.{1,}/; //Anything with an @ sign and characters after;
-  //BASE URLS
-  const emailURL = "https://dashboard.onesignal.com/super-user?email=";
-  const uuidURL = "https://dashboard.onesignal.com/apps/";
-  const orgURL = "https://dashboard.onesignal.com/organizations/";
-  //VALIDATE REGEX WITH SELECTIONS (org and app are both uuid)
-  const uuid_ok = uuid_re.exec(info.selectionText);
-  const email_ok = email_re.exec(info.selectionText);
-
-  console.log("starting conditionals");
-  if (info.menuItemId === MENU.APP_AND_EMAIL) {
-    console.log("start if");
-    if (uuid_ok) {
-      console.log("Searching for app id on submit");
-      const newUrl = `${uuidURL + info.selectionText}`;
-      chrome.tabs.create({ url: newUrl });
-    } else if (email_ok) {
-      console.log("Searching for email on submit");
-      const newUrl = `${emailURL + info.selectionText}`;
-      chrome.tabs.create({ url: newUrl });
-    } else {
-      console.log(info);
-      console.log("Validation Error, please try again");
-    }
+  switch (info.menuItemId) {
+    case MENU.EMAIL_SEARCH:
+      searchSuperuserByEmail(info.selectionText);
+      break;
+    case MENU.APP:
+        openAppPage(info.selectionText);
+      break;
+    case MENU.ORG:
+      openOrgPage(info.selectionText);
+      break;
   }
-
-  if (info.menuItemId === MENU.ORG) {
-    if (uuid_ok) {
-      console.log("Searching for org id on submit");
-      const newUrl = `${orgURL + info.selectionText}`;
-      chrome.tabs.create({ url: newUrl });
-    } else {
-      console.log(info);
-      console.log("Validation Error, please try again");
-    }
-  }
-
-  console.log("Done!");
 });
