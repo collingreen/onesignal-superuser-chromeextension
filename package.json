@@ -5,5 +5,11 @@
   "main": "background.js",
   "repository": "git@github.com:collingreen/onesignal-superuser-chromeextension",
   "author": "Dom",
-  "license": "unlicensed"
+  "license": "unlicensed",
+  "dependencies": {
+    "prettier": "^2.8.8"
+  },
+  "scripts": {
+    "format": "yarn run prettier -w src/*.js"
+  }
 }
